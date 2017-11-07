@@ -146,7 +146,6 @@ class Calendar extends Component {
     } else if (dateutils.sameDate(day, XDate())) {
       state = 'today';
     }
-    console.log('swagbag this.props.activeColor', this.props.activeColor);
     let dayComp;
     if (!dateutils.sameMonth(day, this.state.currentMonth) && this.props.hideExtraDays) {
       if (this.props.markingType === 'interactive') {
