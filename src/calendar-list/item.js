@@ -21,6 +21,7 @@ class CalendarListItem extends Component {
       return (
         <Calendar
           theme={this.props.theme}
+          activeColor={this.props.activeColor}
           style={[{height: this.props.calendarHeight}, this.style.calendar]}
           current={row}
           hideArrows

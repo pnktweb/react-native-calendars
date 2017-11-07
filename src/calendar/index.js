@@ -27,6 +27,8 @@ class Calendar extends Component {
     // Collection of dates that have to be marked. Default = {}
     markedDates: PropTypes.object,
 
+    // activeColor
+    activeColor: PropTypes.string,
     // Specify style for calendar container element. Default = {}
     style: viewPropTypes.style,
     // Initially visible month. Default = Date()
@@ -144,6 +146,7 @@ class Calendar extends Component {
     } else if (dateutils.sameDate(day, XDate())) {
       state = 'today';
     }
+    console.log('swagbag this.props.activeColor', this.props.activeColor);
     let dayComp;
     if (!dateutils.sameMonth(day, this.state.currentMonth) && this.props.hideExtraDays) {
       if (this.props.markingType === 'interactive') {
@@ -159,6 +162,7 @@ class Calendar extends Component {
           state={state}
           theme={this.props.theme}
           onPress={this.pressDay}
+          activeColor={this.props.activeColor}
           day={day}
           marked={this.getDateMarking(day)}
         >

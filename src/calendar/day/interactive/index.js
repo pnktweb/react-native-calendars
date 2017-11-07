@@ -16,6 +16,7 @@ class Day extends Component {
     state: PropTypes.oneOf(['selected', 'disabled', 'today', '']),
 
     // Specify theme properties to override specific styles for calendar parts. Default = {}
+    activeColor: PropTypes.string,
     theme: PropTypes.object,
     marked: PropTypes.any,
 
@@ -31,13 +32,35 @@ class Day extends Component {
     this.style = styleConstructor(props.theme);
     this.markingStyle = this.getDrawingStyle(props.marked);
     this.onDayPress = this.onDayPress.bind(this);
+    this.onDayPressIn = this.onDayPressIn.bind(this);
+	this.onDayPressOut = this.onDayPressOut.bind(this);
+
+	this.state = {
+		isPressedIn: false,
+	};
   }
 
   onDayPress() {
     this.props.onPress(this.props.day);
   }
 
-  shouldComponentUpdate(nextProps) {
+  onDayPressIn() {
+    this.setState({
+      isPressedIn: true,
+    });
+  }
+
+  onDayPressOut() {
+    this.setState({
+      isPressedIn: false,
+    });
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.isPressedIn !== nextState.isPressedIn) {
+      return true;
+    }
+
     const newMarkingStyle = this.getDrawingStyle(nextProps.marked);
 
     if (JSON.stringify(this.markingStyle) !== JSON.stringify(newMarkingStyle)) {
@@ -105,6 +128,8 @@ class Day extends Component {
   }
 
   render() {
+    const {isPressedIn} = this.state;
+    const {activeColor} = this.props;
     const containerStyle = [this.style.base];
     const textStyle = [this.style.text];
     let leftFillerStyle = {};
@@ -182,8 +207,14 @@ class Day extends Component {
       );
     }
 
+    if (activeColor && isPressedIn) {
+      containerStyle.push({
+        backgroundColor: activeColor,
+      });
+    }
+
     return (
-      <TouchableWithoutFeedback onPress={this.onDayPress}>
+      <TouchableWithoutFeedback onPress={this.onDayPress} onPressIn={this.onDayPressIn} onPressOut={this.onDayPressOut}>
         <View style={this.style.wrapper}>
           {fillers}
           <View style={containerStyle}>
